@@ -371,7 +371,7 @@ void EXTI0_1_IRQHandler(void)
 		if (delay_t == 500) {
 			delay_t = 1000;
 
-		// If current set to 1 Hz, change to 2 Hz.
+		// If currently set to 1 Hz, change to 2 Hz.
 		} else {
 			delay_t = 500;
 		}
@@ -430,14 +430,9 @@ uint32_t ADCtoCCR(uint32_t adc_val){
 
 	// Maximum ADC Value = 2^(12) = 4096
 
-	// DutyCycle = CCR / ARR
+	// DutyCycle = CCR / ARR (TIM3->ARR + 1)
 	// CCR = ARR * DutyCycle
-	uint32_t ccr_val = (adc_val * (TIM3->ARR + 1)) / 4096;
-
-	// Ensure that CCR Value doesn't exceed 2^(12)
-//	if (ccr_val > 4096) {
-//		ccr_val = 4096;
-//	}
+	uint32_t ccr_val = (adc_val * 47999) / 4096;
 
 	return ccr_val;
 }
